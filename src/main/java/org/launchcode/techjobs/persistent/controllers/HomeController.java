@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by LaunchCode
@@ -58,34 +57,29 @@ public class HomeController {
         model.addAttribute("employers", employerRepository.findById(employerId));
         model.addAttribute("skills", skillRepository.findAll());
         model.addAttribute("jobs", jobRepository.findAll());
-        List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
-        jobRepository.save(newJob);
         Employer employer = employerRepository.findById(employerId).orElse(new Employer());
         newJob.setEmployer(employer);
-            return "redirect:../";
-        }
-//
-//
-    @GetMapping("view/{jobId}")
-    public String displayViewJob(Model model, @PathVariable int jobId) {
+        List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
+        newJob.setSkills(skillObjs);
+        jobRepository.save(newJob);
+        employerRepository.save(new Employer());
 
+        return "redirect:";
+    }
+
+    @GetMapping("view/{jobId}")
+    public String displayViewJob(Model model, @PathVariable int jobId,@RequestParam int employerId, @Valid Job newJob,@RequestParam List<Integer> skills) {
+        model.addAttribute("jobs", jobRepository.findAll());
+        model.addAttribute("employers", employerRepository.findById(jobId));
+        Employer employer = employerRepository.findById(employerId).orElse(new Employer());
+        newJob.setEmployer(employer);
+        List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
+        newJob.setSkills(skillObjs);
+        jobRepository.save(newJob);
+        employerRepository.save(new Employer());
         return "view";
     }
 
-//    @GetMapping("employer/{employerId}")
-//    public String displayViewEmployer(Model model, @PathVariable int employerId) {
-//
-//        Optional optionalEmployer = employerRepository.findById(employerId);
-//        if (optionalEmployer.isPresent()) {
-//            Employer employer = (Employer) optionalEmployer.get();
-//            model.addAttribute("employer", employer);
-////            return "employer/view";
-//        } else {
-//            return "redirect:../";
-//        }
+
 }
-
-
-
-
 
