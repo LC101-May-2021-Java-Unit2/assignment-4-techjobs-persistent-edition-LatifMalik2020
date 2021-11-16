@@ -1,21 +1,31 @@
 package org.launchcode.techjobs.persistent.models;
 
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
-
+@MappedSuperclass
 public abstract class AbstractEntity {
-
+    @Id
+    @GeneratedValue
     private int id;
-
+//    3A-3B a user cannot leave this field blank when creating an object
+    @NotBlank(message = "Name is required")
+    @Size(max = 150, message = " Too many characters!")
     private String name;
+    public String getName() {
+        return name;
+    }
 
     public int getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
+
 
     public void setName(String name) {
         this.name = name;
