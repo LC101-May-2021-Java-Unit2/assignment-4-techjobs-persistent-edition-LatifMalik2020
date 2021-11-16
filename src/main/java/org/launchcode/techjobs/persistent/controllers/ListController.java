@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 
@@ -17,16 +18,17 @@ import java.util.HashMap;
  * Created by LaunchCode
  */
 @Controller
+
 @RequestMapping(value = "list")
 public class ListController {
 
     @Autowired
-     JobRepository jobRepository;
+   private  JobRepository jobRepository;
     @Autowired
-     EmployerRepository employerRepository;
+    private EmployerRepository employerRepository;
 
     @Autowired
-     SkillRepository skillRepository;
+    private  SkillRepository skillRepository;
     static HashMap<String, String> columnChoices = new HashMap<>();
 
     public ListController () {
@@ -39,7 +41,7 @@ public class ListController {
 
     @RequestMapping("")
     public String list(Model model) {
-        model.addAttribute("all", "viewAll");
+        model.addAttribute("title", "List Jobs");
         model.addAttribute("employers",employerRepository.findAll());
         model.addAttribute("skills", skillRepository.findAll());
         return "list";

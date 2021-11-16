@@ -1,5 +1,6 @@
 package org.launchcode.techjobs.persistent.controllers;
 
+import org.launchcode.techjobs.persistent.models.Employer;
 import org.launchcode.techjobs.persistent.models.Job;
 import org.launchcode.techjobs.persistent.models.Skill;
 import org.launchcode.techjobs.persistent.models.data.EmployerRepository;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by LaunchCode
@@ -20,10 +22,10 @@ import java.util.List;
 @Controller
 public class HomeController {
     @Autowired
-     EmployerRepository employerRepository;
+    EmployerRepository employerRepository;
 
     @Autowired
-     SkillRepository skillRepository;
+    SkillRepository skillRepository;
 
     @Autowired
     JobRepository jobRepository;
@@ -47,7 +49,7 @@ public class HomeController {
 
     @PostMapping("add")
     public String processAddJobForm(@ModelAttribute @Valid Job newJob,
-                                       Errors errors, Model model, @RequestParam int employerId, @RequestParam List<Integer> skills) {
+                                    Errors errors, Model model, @RequestParam int employerId, @RequestParam List<Integer> skills) {
 
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Job");
@@ -57,17 +59,33 @@ public class HomeController {
         model.addAttribute("skills", skillRepository.findAll());
         model.addAttribute("jobs", jobRepository.findAll());
         List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
-        newJob.setSkills(skillObjs);
         jobRepository.save(newJob);
-
-        return "redirect:";
-    }
-
+        Employer employer = employerRepository.findById(employerId).orElse(new Employer());
+        newJob.setEmployer(employer);
+            return "redirect:../";
+        }
+//
+//
     @GetMapping("view/{jobId}")
     public String displayViewJob(Model model, @PathVariable int jobId) {
 
         return "view";
     }
 
-
+//    @GetMapping("employer/{employerId}")
+//    public String displayViewEmployer(Model model, @PathVariable int employerId) {
+//
+//        Optional optionalEmployer = employerRepository.findById(employerId);
+//        if (optionalEmployer.isPresent()) {
+//            Employer employer = (Employer) optionalEmployer.get();
+//            model.addAttribute("employer", employer);
+////            return "employer/view";
+//        } else {
+//            return "redirect:../";
+//        }
 }
+
+
+
+
+

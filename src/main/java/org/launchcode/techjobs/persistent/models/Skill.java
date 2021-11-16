@@ -8,22 +8,21 @@ import java.util.ArrayList;
 import java.util.List;
 @Entity
 public class Skill extends AbstractEntity {
-    @NotNull(message = "Description is required")
+    @NotNull(message = "Description is Needed")
     @Size(max = 300)
     private String description;
 
     @ManyToMany(mappedBy = "skills")
     private List<Job> jobs = new ArrayList<>();
 
-    public Skill(String aDescription){
-        super();
-        this.description = aDescription;
-    }
+
 //    Empty Constructor
     public Skill() {
 
     }
-
+    public Skill(String aDescription){
+        this.description = aDescription;
+    }
     public String getDescription() {
         return description;
     }
@@ -36,7 +35,7 @@ public class Skill extends AbstractEntity {
         return jobs;
     }
 
-    public void setJobs(List<Job> jobs) {
-        this.jobs = jobs;
-    }
+//    public void setJobs(List<Job> jobs) {
+//        this.jobs = jobs;
+//    }
 }

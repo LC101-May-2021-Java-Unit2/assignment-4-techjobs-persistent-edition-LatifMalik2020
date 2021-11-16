@@ -13,18 +13,19 @@ public abstract class AbstractEntity {
     @Id
     @GeneratedValue
     private int id;
-//    3A-3B
+//    3A-3B a user cannot leave this field blank when creating an object
     @NotBlank(message = "Name is required")
-    @Size(max = 100, message = "There are too many characters!")
+    @Size(max = 150, message = " Too many characters!")
     private String name;
+    public String getName() {
+        return name;
+    }
 
     public int getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
-    }
+
 
     public void setName(String name) {
         this.name = name;
